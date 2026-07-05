@@ -6,6 +6,7 @@ a UTF-8 s BOM i bez (Excel BOM přidává).
 """
 import csv
 import io
+from pathlib import Path
 
 from .db import get_db, bump_version
 from .text_utils import parse_number
@@ -148,6 +149,30 @@ def parse_csv(raw: bytes):
     if not questions:
         raise CsvImportError(["Soubor neobsahuje žádné otázky."])
     return questions
+
+
+def sync_folder(sets_dir) -> dict:
+    """Naimportuje všechna CSV ze složky, která ještě nejsou v DB.
+
+    Sada se pozná podle názvu = jméno souboru bez přípony; existující se
+    přeskočí (import je tedy idempotentní — volá se při každém startu
+    aplikace). Chce-li admin sadu aktualizovat, smaže ji v panelu a znovu
+    načte složku. Vadná CSV import nezastaví, chyby se vrací zvlášť.
+    """
+    db = get_db()
+    existing = {r["name"] for r in db.execute("SELECT name FROM question_sets")}
+    imported, skipped, errors = [], [], {}
+    for path in sorted(Path(sets_dir).glob("*.csv")):
+        name = path.stem
+        if name in existing:
+            skipped.append(name)
+            continue
+        try:
+            import_set(name, path.read_bytes())
+            imported.append(name)
+        except (CsvImportError, OSError) as e:
+            errors[name] = e.errors if isinstance(e, CsvImportError) else [str(e)]
+    return {"imported": imported, "skipped": skipped, "errors": errors}
 
 
 def import_set(name: str, raw: bytes) -> int:

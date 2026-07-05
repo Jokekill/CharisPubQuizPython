@@ -280,6 +280,18 @@
 
   // ---------- uploady ----------
 
+  $("sets-sync").addEventListener("click", () => {
+    api("/admin/api/nacist-slozku").then(({ ok, data }) => {
+      if (!ok) return msg(data.error || "Chyba.", true);
+      const errNames = Object.keys(data.errors || {});
+      let parts = [];
+      parts.push(data.imported.length ? `Nové sady: ${data.imported.join(", ")}.` : "Žádné nové sady.");
+      if (errNames.length) parts.push(`Chyby: ${errNames.map(n => n + " (" + data.errors[n].join("; ") + ")").join(", ")}`);
+      msg(parts.join(" "), errNames.length > 0);
+      refresh();
+    });
+  });
+
   $("csv-upload").addEventListener("click", () => {
     const f = $("csv-file").files[0];
     if (!f) return msg("Vyber CSV soubor.", true);

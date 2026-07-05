@@ -5,6 +5,12 @@ je funkční lokálně a připravená k nasazení na PythonAnywhere.
 
 ## Po fázích doplněno
 
+- **Auto-import CSV sad ze složky** (`SETS_DIR`, výchozí `sady_ukazky/`):
+  při startu aplikace se doimportují všechny sady, které v DB chybí (podle
+  názvu souboru, idempotentní — `csv_import.sync_folder`). V adminu tlačítko
+  „🔄 Načíst CSV ze složky“ (`POST /admin/api/nacist-slozku`) pro doimport
+  bez restartu. Vadné CSV import nezastaví, chyby se ukážou/zalogují.
+
 - **Modrý vzhled dle konferencecharis.cz** — akcent = brandová modrá Charis
   `#0096d6` (z jejich theme.css), tmavé pozadí `#0b0f19`, světlejší modrá
   `--accent-soft #4cc3f0` pro texty na tmavém podkladu. Vše v

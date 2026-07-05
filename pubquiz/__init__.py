@@ -21,6 +21,15 @@ def create_app():
     db_module.init_db(app)
     app.teardown_appcontext(db_module.close_db)
 
+    # Automatický import CSV sad ze složky SETS_DIR — sady stačí nahrát na
+    # server (git pull / záložka Files) a po Reloadu jsou v adminu k výběru.
+    from .csv_import import sync_folder
+    if os.path.isdir(app.config["SETS_DIR"]):
+        with app.app_context():
+            result = sync_folder(app.config["SETS_DIR"])
+            for name, errs in result["errors"].items():
+                app.logger.warning("Sada %s se nenačetla: %s", name, "; ".join(errs))
+
     from . import views_player, views_projector, views_admin
     app.register_blueprint(views_player.bp)
     app.register_blueprint(views_projector.bp)

@@ -33,6 +33,11 @@
       <div id="sets-list"></div>
       <hr style="border-color:var(--border)">
       <div class="row">
+        <button class="small secondary" id="sets-sync">🔄 Načíst CSV ze složky</button>
+      </div>
+      <p class="muted" style="font-size:.85rem">CSV ve složce <code>sady_ukazky/</code> na serveru se načítají automaticky
+        při startu — tlačítkem je doimportuješ bez restartu. Aktualizace sady: smaž ji a načti znovu.</p>
+      <div class="row">
         <input type="file" id="csv-file" accept=".csv" style="flex:1; min-width:180px">
         <button class="small" id="csv-upload">Importovat CSV</button>
       </div>

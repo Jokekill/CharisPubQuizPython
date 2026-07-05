@@ -33,7 +33,10 @@ Testy: `.venv\Scripts\python tests\test_smoke.py`
 
 ## Průběh večera
 
-1. V adminu naimportuj sady (CSV) a případně nahraj obrázky.
+1. CSV sady ve složce `sady_ukazky/` se **načtou automaticky při startu
+   aplikace** — stačí soubory nahrát na server (git pull nebo záložka Files
+   na PythonAnywhere) a dát Reload, případně v adminu kliknout na
+   „🔄 Načíst CSV ze složky“. Ručně jde CSV nahrát i přes formulář v adminu.
 2. Otevři `/projektor` na plátně — ukazuje QR, hráči zakládají týmy.
 3. V adminu klikáním sestav frontu sad a spusť kvíz.
 4. U každé otázky: **Otevřít odpovědi** → hráči odpovídají (mohou měnit) →
@@ -49,9 +52,12 @@ Testy: `.venv\Scripts\python tests\test_smoke.py`
 
 ## Formát CSV sady otázek
 
-**Jeden CSV soubor = jedna sada.** Kódování **UTF-8** (v Excelu „Uložit jako →
-CSV UTF-8“), oddělovač **čárka nebo středník** (pozná se automaticky).
-Pořadí otázek = pořadí řádků. Ukázky jsou ve složce [sady_ukazky/](sady_ukazky/).
+**Jeden CSV soubor = jedna sada**, název sady = jméno souboru. Kódování
+**UTF-8** (v Excelu „Uložit jako → CSV UTF-8“), oddělovač **čárka nebo
+středník** (pozná se automaticky). Pořadí otázek = pořadí řádků. Ukázky jsou
+ve složce [sady_ukazky/](sady_ukazky/) — CSV z této složky se importují
+automaticky při startu (už naimportované se přeskočí; chceš-li sadu po úpravě
+souboru obnovit, smaž ji v adminu a klikni „Načíst CSV ze složky“).
 
 ### Sloupce
 

@@ -9,7 +9,7 @@ from flask import (
 from werkzeug.utils import secure_filename
 
 from . import game
-from .csv_import import CsvImportError, import_set
+from .csv_import import CsvImportError, import_set, sync_folder
 from .db import get_db, bump_version
 from .payloads import base_state, team_answers
 
@@ -121,6 +121,16 @@ def upload_csv():
     except CsvImportError as e:
         return jsonify({"error": "Import selhal:", "errors": e.errors}), 400
     return jsonify({"ok": True, "set_id": set_id, "name": name})
+
+
+@bp.post("/api/nacist-slozku")
+@login_required
+def sync_sets_folder():
+    """Znovu projde složku s CSV sadami a doimportuje nové (bez restartu)."""
+    sets_dir = current_app.config["SETS_DIR"]
+    if not os.path.isdir(sets_dir):
+        return jsonify({"error": f"Složka {sets_dir} neexistuje."}), 400
+    return jsonify(sync_folder(sets_dir))
 
 
 @bp.post("/api/smazat-sadu")

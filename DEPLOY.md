@@ -109,8 +109,10 @@ routu, takže obrázky fungují, i kdybys na mapování zapomněl — ale nastav
 
 Na záložce **Web** klikni na velké zelené **Reload**. Pak otevři:
 
-- `https://charispubquizz.pythonanywhere.com/admin` — přihlas se, naimportuj
-  sady ze `sady_ukazky/` (třeba `vlajky_spek.csv`),
+- `https://charispubquizz.pythonanywhere.com/admin` — přihlas se; sady ze
+  složky `sady_ukazky/` (včetně `vlajky_spek`) už tam budou načtené
+  automaticky. Vlastní kvízové CSV stačí nahrát do téže složky (záložka
+  *Files* nebo git) a dát Reload či v adminu „Načíst CSV ze složky“,
 - `https://charispubquizz.pythonanywhere.com/projektor` — musí ukázat QR kód
   mířící na `https://charispubquizz.pythonanywhere.com/`,
 - naskenuj QR telefonem a založ testovací tým.

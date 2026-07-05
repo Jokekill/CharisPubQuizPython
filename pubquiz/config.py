@@ -49,5 +49,9 @@ class Config:
     # Složka s obrázky otázek
     MEDIA_DIR = os.environ.get("MEDIA_DIR", str(BASE_DIR / "media"))
 
+    # Složka s CSV sadami — při startu aplikace (a tlačítkem v adminu) se
+    # z ní automaticky naimportují všechny sady, které ještě nejsou v DB.
+    SETS_DIR = os.environ.get("SETS_DIR", str(BASE_DIR / "sady_ukazky"))
+
     # Max. velikost uploadu (CSV / obrázky)
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024
