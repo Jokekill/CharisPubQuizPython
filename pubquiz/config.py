@@ -33,8 +33,9 @@ class Config:
     ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "kviz123")
 
     # Veřejná URL aplikace — používá se pro QR kód a odkaz na projektoru.
-    # Po nasazení nastav např. https://uzivatel.pythonanywhere.com
-    PUBLIC_URL = os.environ.get("PUBLIC_URL", "http://127.0.0.1:5000")
+    # Výchozí = produkční adresa na PythonAnywhere (účet CharisPubQuizz).
+    # Pro lokální testování s telefony přepiš v .env na IP počítače v síti.
+    PUBLIC_URL = os.environ.get("PUBLIC_URL", "https://charispubquizz.pythonanywhere.com")
 
     # Interval pollingu klientů v milisekundách (výchozí 2 s)
     POLL_INTERVAL_MS = _int("POLL_INTERVAL_MS", 2000)

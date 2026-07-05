@@ -1,25 +1,26 @@
 # Nasazení na PythonAnywhere — krok za krokem
 
-Návod počítá s tím, že máš účet na www.pythonanywhere.com (US) nebo
-eu.pythonanywhere.com (EU). Tvoje webová adresa pak bude:
+Návod je napsaný přímo pro tento projekt:
 
-- US: `https://TVOJEJMENO.pythonanywhere.com`
-- EU: `https://TVOJEJMENO.eu.pythonanywhere.com`
+- **PythonAnywhere účet:** `CharisPubQuizz` (US server www.pythonanywhere.com)
+- **Veřejná adresa webu:** `https://charispubquizz.pythonanywhere.com`
+- **GitHub repozitář:** `https://github.com/Jokekill/CharisPubQuizPython`
 
-Tu adresu budeš potřebovat v kroku 4 (QR kód musí ukazovat na ni).
+Adresa `https://charispubquizz.pythonanywhere.com` je zároveň výchozí
+`PUBLIC_URL` v aplikaci — **QR kód na projektoru na ni míří automaticky**,
+i kdybys žádný `.env` nevytvořil.
 
 ## 1. Nahrání kódu
 
-Otevři **Consoles → Bash** a naklonuj repozitář (nebo nahraj ZIP přes záložku
-*Files* a rozbal ho):
+Na PythonAnywhere otevři **Consoles → Bash** a naklonuj repozitář:
 
 ```bash
 cd ~
-git clone https://github.com/TVUJUCET/CharisPubQuizPython.git pubquiz
+git clone https://github.com/Jokekill/CharisPubQuizPython.git pubquiz
 cd pubquiz
 ```
 
-(Dál předpokládám, že kód je v `~/pubquiz`.)
+(Při pozdějších aktualizacích pak stačí `cd ~/pubquiz && git pull` + Reload.)
 
 ## 2. Virtualenv a závislosti
 
@@ -39,8 +40,8 @@ a pak `source ~/.virtualenvs/pubquiz-venv/bin/activate`.)
 2. Zvol **Manual configuration** (NE „Flask“ — ten vytváří vlastní skeleton)
    a Python 3.12.
 3. Na stránce webové aplikace nastav:
-   - **Source code:** `/home/TVOJEJMENO/pubquiz`
-   - **Virtualenv:** `/home/TVOJEJMENO/.virtualenvs/pubquiz-venv`
+   - **Source code:** `/home/CharisPubQuizz/pubquiz`
+   - **Virtualenv:** `/home/CharisPubQuizz/.virtualenvs/pubquiz-venv`
 
 ## 4. Konfigurace aplikace (.env)
 
@@ -52,26 +53,23 @@ cp .env.example .env
 nano .env
 ```
 
-Nastav:
+Povinně změň heslo a tajný klíč (PUBLIC_URL už je v souboru správně):
 
 ```
 ADMIN_PASSWORD=silne-heslo-ktere-nikdo-neuhodne
-SECRET_KEY=dlouhy-nahodny-retezec        # vygeneruj třeba: python -c "import secrets;print(secrets.token_hex(32))"
-PUBLIC_URL=https://TVOJEJMENO.pythonanywhere.com
+SECRET_KEY=dlouhy-nahodny-retezec        # vygeneruj: python -c "import secrets;print(secrets.token_hex(32))"
+PUBLIC_URL=https://charispubquizz.pythonanywhere.com
 ```
-
-**`PUBLIC_URL` je adresa, na kterou povede QR kód na projektoru** — použij
-přesně svou doménu včetně `https://` (EU účty mají `.eu.pythonanywhere.com`).
 
 ## 5. WSGI soubor
 
 Na záložce **Web** klikni na odkaz **WSGI configuration file**
-(`/var/www/TVOJEJMENO_pythonanywhere_com_wsgi.py`) a **celý obsah nahraď** tímto:
+(`/var/www/charispubquizz_pythonanywhere_com_wsgi.py`) a **celý obsah nahraď** tímto:
 
 ```python
 import sys
 
-path = '/home/TVOJEJMENO/pubquiz'
+path = '/home/CharisPubQuizz/pubquiz'
 if path not in sys.path:
     sys.path.insert(0, path)
 
@@ -82,7 +80,7 @@ from app import app as application  # noqa
 
 Databáze (SQLite soubor `pubquiz.sqlite3` v `~/pubquiz`) se vytvoří
 automaticky při prvním startu aplikace — není potřeba nic ručně spouštět.
-Chceš-li ji vytvořit předem / ověřit, že vše funguje:
+Chceš-li ověřit, že vše funguje, ještě před Reloadem:
 
 ```bash
 cd ~/pubquiz
@@ -100,8 +98,8 @@ Na záložce **Web** v sekci **Static files** přidej dvě mapování:
 
 | URL | Directory |
 |---|---|
-| `/static/` | `/home/TVOJEJMENO/pubquiz/static` |
-| `/media/`  | `/home/TVOJEJMENO/pubquiz/media` |
+| `/static/` | `/home/CharisPubQuizz/pubquiz/static` |
+| `/media/`  | `/home/CharisPubQuizz/pubquiz/media` |
 
 Tím bude CSS/JS i obrázky otázek servírovat přímo webserver (rychlejší a
 nezatěžuje to Python workera). Aplikace má pro `/media/` i vlastní fallback
@@ -111,13 +109,13 @@ routu, takže obrázky fungují, i kdybys na mapování zapomněl — ale nastav
 
 Na záložce **Web** klikni na velké zelené **Reload**. Pak otevři:
 
-- `https://TVOJEJMENO.pythonanywhere.com/admin` — přihlas se, naimportuj
-  ukázkové CSV ze `sady_ukazky/`,
-- `https://TVOJEJMENO.pythonanywhere.com/projektor` — musí ukázat QR kód
-  s tvou veřejnou adresou,
+- `https://charispubquizz.pythonanywhere.com/admin` — přihlas se, naimportuj
+  sady ze `sady_ukazky/` (třeba `vlajky_spek.csv`),
+- `https://charispubquizz.pythonanywhere.com/projektor` — musí ukázat QR kód
+  mířící na `https://charispubquizz.pythonanywhere.com/`,
 - naskenuj QR telefonem a založ testovací tým.
 
-Po každé změně kódu nebo `.env` je potřeba **Reload** znovu.
+Po každé změně kódu (`git pull`) nebo `.env` je potřeba **Reload** znovu.
 
 ## Volba tarifu — kdy stačí free?
 
@@ -127,10 +125,10 @@ Po každé změně kódu nebo `.env` je potřeba **Reload** znovu.
   projektor + admin je to ~8–9 requestů za sekundu. Free tarif má **jednoho
   slabšího workera a denní CPU limit (100 s)** — requesty se budou frontovat,
   hráčům se zpozdí otázky a limit můžeš během večera vyčerpat.
-- **Pro ostrý kvíz doporučuji tarif Hacker (~5 $/měsíc)** — víc CPU, rychlejší
-  worker, a jde zaplatit jen na měsíc, kdy se kvíz koná. Případně můžeš
-  v `.env` zvednout `POLL_INTERVAL_MS` na 3000–4000, čímž zátěž znatelně
-  klesne za cenu o něco pomalejších reakcí na telefonech.
+- **Pro ostrý kvíz na konferenci doporučuji tarif Hacker (~5 $/měsíc)** —
+  víc CPU a rychlejší worker; jde zaplatit jen na měsíc, kdy se kvíz koná.
+  Případně můžeš v `.env` zvednout `POLL_INTERVAL_MS` na 3000–4000, čímž
+  zátěž znatelně klesne za cenu o něco pomalejších reakcí na telefonech.
 
 ## Řešení potíží
 
