@@ -1,0 +1,296 @@
+/* Pubkvíz — tmavý minimalistický vzhled ve stylu konferencecharis.cz.
+   Akcentní barva: brandová modrá Charis #0096d6, tmavé pozadí #0b0f19
+   (obojí převzato z jejich webu). Prosté CSS bez frameworku. */
+
+:root {
+  --bg: #0b0f19;
+  --bg-card: #141b2c;
+  --bg-input: #1c2539;
+  --text: #eff2fc;
+  --text-dim: #9397ad;
+  --accent: #0096d6;
+  --accent-dark: #007bb0;
+  --accent-soft: #4cc3f0;   /* světlejší modrá pro text na tmavém pozadí */
+  --ok: #22c55e;
+  --bad: #ef4444;
+  --border: #2a3450;
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { font-weight: 700; margin: 0 0 .5em; }
+a { color: var(--accent); }
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.muted { color: var(--text-dim); }
+.hidden { display: none !important; }
+.center { text-align: center; }
+.ok { color: var(--ok); }
+.bad { color: var(--bad); }
+.accent { color: var(--accent-soft); }
+
+/* ---------- formulářové prvky ---------- */
+
+input[type="text"], input[type="number"], select {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 1.1rem;
+  color: var(--text);
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  outline: none;
+}
+input:focus { border-color: var(--accent); }
+
+button {
+  cursor: pointer;
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 14px 20px;
+  color: #fff;
+  background: var(--accent);
+  border: none;
+  border-radius: var(--radius);
+  transition: filter .15s, transform .05s;
+}
+button:hover { filter: brightness(1.1); }
+button:active { transform: scale(.98); }
+button:disabled { opacity: .45; cursor: default; }
+
+button.secondary {
+  background: var(--bg-input);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+button.danger { background: var(--bad); color: #fff; }
+button.small { padding: 6px 12px; font-size: .9rem; border-radius: 8px; }
+
+/* ---------- hráč: velká odpověďová tlačítka ---------- */
+
+.answer-grid {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+.answer-btn {
+  width: 100%;
+  padding: 18px 16px;
+  font-size: 1.15rem;
+  text-align: left;
+  background: var(--bg-input);
+  color: var(--text);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+}
+.answer-btn .letter {
+  display: inline-block;
+  min-width: 1.6em;
+  font-weight: 800;
+  color: var(--accent-soft);
+}
+.answer-btn.selected {
+  border-color: var(--accent);
+  background: rgba(0, 150, 214, .15);
+}
+
+.question-image {
+  width: 100%;
+  max-height: 40vh;
+  object-fit: contain;
+  border-radius: var(--radius);
+  margin: 12px 0;
+  background: #000;
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: .9rem;
+  font-weight: 600;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+.status-pill.open { color: var(--ok); border-color: var(--ok); }
+.status-pill.countdown { color: var(--accent-soft); border-color: var(--accent); }
+.status-pill.locked { color: var(--bad); border-color: var(--bad); }
+
+/* ---------- tabulka pořadí ---------- */
+
+table.standings {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.05rem;
+}
+table.standings td, table.standings th {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+table.standings th { color: var(--text-dim); font-weight: 600; }
+table.standings td.rank { width: 3em; font-weight: 800; color: var(--accent-soft); }
+table.standings td.pts { text-align: right; font-weight: 700; }
+.change-up { color: var(--ok); font-size: .9em; }
+.change-down { color: var(--bad); font-size: .9em; }
+
+/* ---------- projektor ---------- */
+
+body.projector {
+  overflow: hidden;
+  height: 100vh;
+}
+.proj-wrap {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4vh 5vw;
+  text-align: center;
+}
+.proj-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 18px 28px;
+  font-size: 1.4rem;
+  color: var(--text-dim);
+}
+.proj-question {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.25;
+  max-width: 90vw;
+}
+.proj-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2vh 3vw;
+  margin-top: 5vh;
+  font-size: clamp(1.3rem, 3vw, 2.4rem);
+  text-align: left;
+}
+.proj-options .letter { color: var(--accent-soft); font-weight: 800; margin-right: .4em; }
+.proj-image {
+  max-height: 42vh;
+  max-width: 80vw;
+  object-fit: contain;
+  border-radius: var(--radius);
+  margin-top: 3vh;
+}
+.proj-countdown {
+  font-size: clamp(5rem, 18vw, 14rem);
+  font-weight: 900;
+  color: var(--accent-soft);
+  line-height: 1;
+}
+.proj-answer {
+  margin-top: 4vh;
+  font-size: clamp(1.8rem, 4.5vw, 3.5rem);
+  font-weight: 800;
+  color: var(--ok);
+}
+.proj-qr { width: min(38vh, 60vw); border-radius: var(--radius); background: #fff; padding: 12px; }
+.proj-url { font-size: clamp(1.4rem, 3vw, 2.4rem); color: var(--accent-soft); font-weight: 700; }
+.proj-teams {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 3vh;
+  max-width: 85vw;
+}
+.proj-teams span {
+  padding: 8px 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 1.3rem;
+}
+.proj-standings { font-size: clamp(1.2rem, 2.6vw, 2rem); min-width: min(70vw, 900px); }
+.proj-standings td, .proj-standings th { padding: 1vh 1.5vw; }
+.proj-status {
+  margin-top: 4vh;
+  font-size: clamp(1.2rem, 2.5vw, 2rem);
+  color: var(--text-dim);
+}
+
+.fade { animation: fadeIn .4s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; } }
+
+/* ---------- admin ---------- */
+
+body.admin .container { max-width: 1100px; }
+.admin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 900px) { .admin-grid { grid-template-columns: 1fr; } }
+
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.row > * { flex-shrink: 0; }
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.list-item:last-child { border-bottom: none; }
+
+.answers-table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+.answers-table td, .answers-table th {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 700;
+}
+.badge.ok { background: rgba(63,185,108,.15); color: var(--ok); }
+.badge.bad { background: rgba(224,85,85,.15); color: var(--bad); }
+.badge.bonus { background: rgba(0,150,214,.18); color: var(--accent-soft); }
+.badge.override { background: rgba(150,120,255,.18); color: #b9a5ff; }
+
+#admin-msg {
+  position: fixed;
+  bottom: 20px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-card);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 12px 24px;
+  z-index: 100;
+}

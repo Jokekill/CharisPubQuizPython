@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Pubkvíz — hráč{% endblock %}
+{% block content %}
+<div class="container">
+
+  <!-- Založení týmu -->
+  <div id="join-screen" class="card hidden">
+    <h1>🧩 Pubkvíz</h1>
+    <p class="accent" style="margin-top:-8px">Konference Charis</p>
+    <p class="muted">Založte svůj tým — jedno zařízení = jeden tým (odpovídá kapitán).</p>
+    <input type="text" id="team-name" placeholder="Název týmu" maxlength="30" autocomplete="off">
+    <p id="join-error" class="bad hidden"></p>
+    <button id="join-btn" style="width:100%; margin-top:12px">Přidat tým do hry</button>
+  </div>
+
+  <!-- Herní obrazovka -->
+  <div id="game-screen" class="hidden">
+    <div class="row" style="justify-content:space-between; margin-bottom:12px">
+      <strong id="my-team" class="accent"></strong>
+      <span id="status-pill" class="status-pill"></span>
+    </div>
+    <div id="content" class="card"></div>
+  </div>
+
+  <p id="conn-error" class="muted center hidden">Ztraceno spojení, zkouším znovu…</p>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/hrac.js') }}"></script>
+{% endblock %}

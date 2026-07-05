@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Pubkvíz — projektor{% endblock %}
+{% block bodyclass %}projector{% endblock %}
+{% block content %}
+<div class="proj-header">
+  <span id="proj-set"></span>
+  <span id="proj-progress"></span>
+</div>
+<div class="proj-wrap" id="proj-content"></div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/projektor.js') }}"></script>
+{% endblock %}

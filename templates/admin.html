@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Pubkvíz — admin{% endblock %}
+{% block bodyclass %}admin{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row" style="justify-content:space-between; margin-bottom:12px">
+    <h1 style="margin:0">🎛️ Ovládání kvízu</h1>
+    <div class="row">
+      <a href="/projektor" target="_blank"><button class="secondary small">Projektor ↗</button></a>
+      <a href="/admin/logout"><button class="secondary small">Odhlásit</button></a>
+    </div>
+  </div>
+
+  <!-- Řízení hry — nahoře, při hře je to hlavní pracovní plocha -->
+  <div class="card" id="game-card">
+    <div class="row" style="justify-content:space-between">
+      <h2 style="margin:0">Hra</h2>
+      <span id="game-phase" class="status-pill"></span>
+    </div>
+    <div id="game-controls" style="margin-top:14px"></div>
+  </div>
+
+  <!-- Odpovědi týmů k aktuální otázce -->
+  <div class="card hidden" id="answers-card">
+    <h2>Odpovědi týmů <span id="answered-count" class="muted"></span></h2>
+    <div id="answers-box"></div>
+  </div>
+
+  <div class="admin-grid">
+    <!-- Sady otázek -->
+    <div class="card">
+      <h2>Sady otázek</h2>
+      <div id="sets-list"></div>
+      <hr style="border-color:var(--border)">
+      <div class="row">
+        <input type="file" id="csv-file" accept=".csv" style="flex:1; min-width:180px">
+        <button class="small" id="csv-upload">Importovat CSV</button>
+      </div>
+      <p class="muted" style="font-size:.85rem">Jedna sada = jeden CSV soubor (formát viz README).</p>
+      <div class="row">
+        <input type="file" id="img-file" accept="image/*" style="flex:1; min-width:180px">
+        <button class="small secondary" id="img-upload">Nahrát obrázek</button>
+      </div>
+      <p class="muted" style="font-size:.85rem">Obrázky se ukládají do <code>media/</code> a v CSV se odkazují názvem souboru.</p>
+    </div>
+
+    <!-- Týmy -->
+    <div class="card">
+      <h2>Týmy <span id="team-count" class="muted"></span></h2>
+      <div id="teams-list"></div>
+    </div>
+  </div>
+
+  <!-- Průběžné pořadí -->
+  <div class="card">
+    <h2>Celkové pořadí</h2>
+    <div id="standings-box"></div>
+  </div>
+
+  <div class="card">
+    <h2 class="bad">Nebezpečná zóna</h2>
+    <button class="danger small" id="reset-btn">Resetovat hru (smaže odpovědi, týmy zůstanou)</button>
+  </div>
+</div>
+<div id="admin-msg" class="hidden"></div>
+{% endblock %}
+{% block scripts %}
+<script>const DEFAULT_COUNTDOWN = {{ default_countdown }};</script>
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Pubkvíz — přihlášení{% endblock %}
+{% block content %}
+<div class="container" style="max-width:420px; margin-top:12vh">
+  <div class="card">
+    <h1>Admin</h1>
+    <form method="post">
+      <input type="password" name="password" placeholder="Heslo" autofocus>
+      {% if error %}<p class="bad">{{ error }}</p>{% endif %}
+      <button style="width:100%; margin-top:12px">Přihlásit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
