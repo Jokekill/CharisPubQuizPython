@@ -9,6 +9,7 @@
   let lastVersion = -1;
   let lastState = null;
   let pendingAnswer = null;   // lokálně vybraná odpověď čekající na potvrzení
+  let currentQid = null;      // id právě zobrazené otázky (reset výběru při změně)
   let countdownTimer = null;
 
   // ---------- pomocné ----------
@@ -74,6 +75,14 @@
     $("game-screen").classList.remove("hidden");
     $("my-team").textContent = "Tým: " + s.team.name;
     renderPill(s);
+
+    // Nová otázka → zahodit lokálně vybranou odpověď z té minulé
+    const qid = s.question ? s.question.id : null;
+    if (qid !== currentQid) {
+      currentQid = qid;
+      pendingAnswer = null;
+      lastState = null;
+    }
 
     // Překreslujeme jen při změně stavu (aby nezmizel rozepsaný text)
     const key = s.version + "|" + (pendingAnswer || "");

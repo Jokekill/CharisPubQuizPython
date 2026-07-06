@@ -12,11 +12,13 @@ Fáze hry (phase):
     finished       konec večera, finální pořadí
 
 Podstavy otázky (q_state):
-    shown      otázka je vidět, odpovědi zatím nejsou otevřené
-    open       hráči mohou odpovídat / měnit odpověď
+    open       otázka je vidět a hráči mohou rovnou odpovídat / měnit odpověď
+               (odpovědi se otevírají okamžitě se zobrazením otázky)
     countdown  admin zavřel odpovědi, běží odpočet — odpovídat stále lze
     locked     odpovědi definitivně zamčené a vyhodnocené
     revealed   na projektoru se ukazuje správná odpověď
+    (stav `shown` — otázka bez otevřených odpovědí — už se v běžném toku
+    nepoužívá; zůstává jen jako výchozí hodnota mimo hru)
 """
 import json
 import time
@@ -96,13 +98,13 @@ def tick():
 # ---------------------------------------------------------------------------
 
 def start_game(set_ids: list):
-    """Spustí kvíz s vybranými sadami v daném pořadí; ukáže první otázku."""
+    """Spustí kvíz s vybranými sadami; první otázka rovnou s otevřenými odpověďmi."""
     _update_state(
         phase="question",
         set_queue=json.dumps(set_ids),
         set_index=0,
         question_index=0,
-        q_state="shown",
+        q_state="open",
         countdown_ends=None,
         review_index=-1,
     )
@@ -130,7 +132,7 @@ def reveal_answer():
 
 
 def next_question():
-    """Posun na další otázku; po poslední otázce sady → výsledky sady."""
+    """Posun na další otázku (odpovědi hned otevřené); po poslední → výsledky sady."""
     state = get_state()
     sid = current_set_id(state)
     qs = set_questions(sid)
@@ -138,7 +140,7 @@ def next_question():
         _update_state(
             phase="question",
             question_index=state["question_index"] + 1,
-            q_state="shown",
+            q_state="open",
             countdown_ends=None,
         )
     else:
@@ -184,7 +186,7 @@ def next_set():
             phase="question",
             set_index=state["set_index"] + 1,
             question_index=0,
-            q_state="shown",
+            q_state="open",
             countdown_ends=None,
             review_index=-1,
         )

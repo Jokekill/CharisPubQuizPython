@@ -5,6 +5,15 @@ je funkční lokálně a připravená k nasazení na PythonAnywhere.
 
 ## Po fázích doplněno
 
+- **Odpovědi se otevírají okamžitě** se zobrazením otázky (start hry, další
+  otázka, další sada → rovnou `q_state=open`); tlačítko „Otevřít odpovědi“
+  z adminu zmizelo, místo něj u zamčené otázky pojistka „↺ Znovu otevřít“.
+- **Fix: předoznačená odpověď z minulé otázky** — hráčský JS držel lokální
+  `pendingAnswer` napříč otázkami; teď se při změně id otázky resetuje.
+- **Body sjednoceny na 1** ve všech ukázkových sadách (sloupec `body` v CSV
+  zůstává jako volitelná funkce, ale nikde se nepoužívá; bonus +1 za
+  nejbližší číselný tip zůstává).
+
 - **Auto-import CSV sad ze složky** (`SETS_DIR`, výchozí `sady_ukazky/`):
   při startu aplikace se doimportují všechny sady, které v DB chybí (podle
   názvu souboru, idempotentní — `csv_import.sync_folder`). V adminu tlačítko

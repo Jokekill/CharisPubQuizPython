@@ -79,8 +79,9 @@ def test_full_flow():
         assert r.status_code == expect, r.get_json()
 
     # Otázka 1: Vltava 430 ±30. Alfa 425 (pásmo+nejblíž=2b), Beta 400 (pásmo=1b), Gama 100 (0b)
-    answer("Alfa", "425", expect=409)  # odpovědi ještě nejsou otevřené
-    act("open")
+    # Odpovědi jsou otevřené okamžitě se zobrazením otázky
+    st = c.get("/admin/api/stav").get_json()
+    assert st["q_state"] == "open"
     answer("Alfa", "999")
     answer("Alfa", "425")  # změna odpovědi před zamčením
     answer("Beta", "400")
@@ -115,12 +116,11 @@ def test_full_flow():
     p = c.get("/api/projektor").get_json()
     assert p["q_state"] == "revealed" and "430" in p["correct_answer"]
 
-    # projet zbylé otázky bez odpovědí
+    # projet zbylé otázky bez odpovědí (odpovědi se otevírají samy)
     for _ in range(4):
         act("next")
         s = c.get("/api/projektor").get_json()
         if s["phase"] == "question":
-            act("open")
             act("close", countdown=0)
     act("next")
 

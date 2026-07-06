@@ -39,10 +39,11 @@ Testy: `.venv\Scripts\python tests\test_smoke.py`
    „🔄 Načíst CSV ze složky“. Ručně jde CSV nahrát i přes formulář v adminu.
 2. Otevři `/projektor` na plátně — ukazuje QR, hráči zakládají týmy.
 3. V adminu klikáním sestav frontu sad a spusť kvíz.
-4. U každé otázky: **Otevřít odpovědi** → hráči odpovídají (mohou měnit) →
-   **Zavřít odpovědi** spustí odpočet (výchozí 5 s, nastavitelný) → po
-   odpočtu se odpovědi zamknou a automaticky vyhodnotí → volitelně
-   **Ukázat správnou odpověď** → **Další otázka**.
+4. U každé otázky: odpovědi jsou **otevřené hned od zobrazení otázky** —
+   hráči odpovídají (a mohou měnit) → **Zavřít odpovědi** spustí odpočet
+   (výchozí 5 s, nastavitelný) → po odpočtu se odpovědi zamknou a automaticky
+   vyhodnotí → volitelně **Ukázat správnou odpověď** → **Další otázka**.
+   (Omylem zavřenou otázku jde znovu otevřít.)
 5. V tabulce „Odpovědi týmů“ můžeš kdykoli po zamčení ručně **uznat/neuznat**
    jakoukoli odpověď — body se přepočítají.
 6. Po poslední otázce sady se ukáže pořadí sady, pak celkové pořadí večera

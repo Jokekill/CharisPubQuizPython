@@ -97,8 +97,6 @@
       html += `<p><strong>Otázka ${s.question_number}/${s.question_count}:</strong> ${esc(q ? q.otazka : "")}<br>
         <span class="muted">Správně: <strong class="ok">${esc(correctLabel(q))}</strong>${q && q.body > 1 ? ` · za ${q.body} b.` : ""}</span></p>
         <div class="row">`;
-      if (s.q_state === "shown")
-        html += `<button data-act="open">🟢 Otevřít odpovědi</button>`;
       if (s.q_state === "open")
         html += `<label class="muted">Odpočet:
             <input type="number" id="cd-secs" value="${DEFAULT_COUNTDOWN}" min="0" max="120" style="width:75px; padding:8px"> s
@@ -107,7 +105,8 @@
       if (s.q_state === "countdown")
         html += `<span class="status-pill countdown">⏳ Odpočet běží…</span>`;
       if (s.q_state === "locked")
-        html += `<button data-act="reveal">👁 Ukázat správnou odpověď</button>`;
+        html += `<button data-act="reveal">👁 Ukázat správnou odpověď</button>
+          <button class="secondary small" data-act="open">↺ Znovu otevřít odpovědi</button>`;
       if (s.q_state === "locked" || s.q_state === "revealed")
         html += `<button data-act="next">⏭ Další otázka</button>`;
       html += `<button class="secondary small" data-act="prev" ${s.question_number > 1 ? "" : "disabled"}>← předchozí</button></div>`;
